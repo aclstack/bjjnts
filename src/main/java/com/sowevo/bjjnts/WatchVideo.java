@@ -252,7 +252,9 @@ public class WatchVideo {
                 if (lessonIndex > 1){
                     driver.findElement(By.cssSelector("div[class^='open_list___']")).click();
                 }
-                if (elements.size()>lessonIndex){
+                if (elements.size()>lessonIndex)
+                    // 处理学习前错峰提示
+                    checkStagger();
                     log.info("{}:开始学习\t{}",name,elements.get(lessonIndex).getText());
                     elements.get(lessonIndex).click();
                 } else {
@@ -417,6 +419,18 @@ public class WatchVideo {
             return true;
         }
         return false;
+    }
+    
+    /**
+     * 检查是否存在错峰提示
+     */
+    public void checkStagger() {
+        try {
+            WebElement button = driver.findElement(By.cssSelector("button[class='ant-btn ant-btn-primary']"));
+            button.click();
+            log.info("{}:点击错峰出行",name);
+        } catch (Exception ignored) {
+        }
     }
 
     /**
